@@ -31,8 +31,9 @@ def train(x_tr, y_tr, x_te, y_te, embedding_weights, params):
 		model = nn.DataParallel(model)
 	
 	if(len(params.load_model)):
+		params.model_name = params.load_model
 		print(params.load_model)
-		model, optimizer, start = load_model(model, params.load_model, optimizer=optimizer)
+		model, optimizer, init = load_model(model, params.load_model, optimizer=optimizer)
 	else:
 		init = 0
 	iteration = 0
@@ -99,7 +100,7 @@ def train(x_tr, y_tr, x_te, y_te, embedding_weights, params):
 				os.makedirs('saved_models/' + params.model_name)
 			save_model(model, optimizer, epoch, params.model_name + "/model_best_test")
 
-		if params.save:
+		if epoch % params.save_step == 0:
 			save_model(model, optimizer, epoch, params.model_name + "/model_" + str(epoch))
 
 

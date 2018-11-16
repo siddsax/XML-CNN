@@ -14,7 +14,7 @@ def precision_k(true_mat, score_mat,k):
     for k in range(k):
         score_mat = backup
         for i in range(rank_mat.shape[0]):
-	    print(k, i)
+
             score_mat[i][rank_mat[i, :-(k+1)]] = 0
         
 

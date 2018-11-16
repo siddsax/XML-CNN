@@ -42,7 +42,7 @@ def test_class(x_te, y_te, params, model=None, x_tr=None, y_tr=None, embedding_w
     
         loss = log_loss(y_tr, Y)
         prec = precision_k(y_tr.todense(), Y, 5)
-        print('Test Loss; Precision Scores [1->5] {} Cross Entropy {};'.format(prec, loss))
+        print('Test Loss; Precision Scores [1->5] {} {} {} {} {} Cross Entropy {};'.format(prec[0], prec[1], prec[2], prec[3], prec[4],loss))
     
     
     x_te, _ = load_batch_cnn(x_te, y_te, params, batch=False)
@@ -62,7 +62,7 @@ def test_class(x_te, y_te, params, model=None, x_tr=None, y_tr=None, embedding_w
     loss = log_loss(y_te, Y2) # Reverse of pytorch
     #print("A")
     prec = precision_k(y_te.todense(), Y2, 5) # Reverse of pytorch
-    print('Test Loss; Precision Scores [1->5] {} Cross Entropy {};'.format(prec, loss))
+    print('Test Loss; Precision Scores [1->5] {} {} {} {} {} Cross Entropy {};'.format(prec[0], prec[1], prec[2], prec[3], prec[4],loss))
     
     if(save):
         Y_probabs2 = sparse.csr_matrix(Y2)
