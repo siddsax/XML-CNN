@@ -35,16 +35,16 @@ def test_class(x_te, y_te, params, model=None, x_tr=None, y_tr=None, embedding_w
         H = model.encoder.forward(e_emb)
         Y[-rem:, :] = model.classifier(H).data
         for i in range(0, x_tr.shape[0] - rem, params.mb_size ):
-            #print(i)
+           
             e_emb = model.embedding_layer.forward(x_tr[i:i+params.mb_size].view(params.mb_size, x_te.shape[1]))
             H = model.encoder.forward(e_emb)
             Y[i:i+params.mb_size,:] = model.classifier(H).data
     
         loss = log_loss(y_tr, Y)
-        prec = precision_k(y_tr, Y, 5)
+        prec = precision_k(y_tr.todense(), Y, 5)
         print('Test Loss; Precision Scores [1->5] {} Cross Entropy {};'.format(prec, loss))
     
-    #y_te = y_te[:,:-1]
+    
     x_te, _ = load_batch_cnn(x_te, y_te, params, batch=False)
     Y2 = np.zeros(y_te.shape)
     rem = x_te.shape[0]%params.mb_size
@@ -61,7 +61,7 @@ def test_class(x_te, y_te, params, model=None, x_tr=None, y_tr=None, embedding_w
 
     loss = log_loss(y_te, Y2) # Reverse of pytorch
     #print("A")
-    prec = precision_k(y_te, Y2, 5) # Reverse of pytorch
+    prec = precision_k(y_te.todense(), Y2, 5) # Reverse of pytorch
     print('Test Loss; Precision Scores [1->5] {} Cross Entropy {};'.format(prec, loss))
     
     if(save):
