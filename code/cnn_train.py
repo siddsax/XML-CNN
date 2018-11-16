@@ -76,8 +76,8 @@ def train(x_tr, y_tr, x_te, y_te, embedding_weights, params):
 					win = viz.line(X=np.arange(iteration, iteration + .1), Y=np.arange(0, .1))
 			iteration +=1
 
-			#if(epoch==0):
-			#	break
+			if(epoch==0):
+				break
 
 		if(totalLoss<bestTotalLoss):
 

@@ -35,7 +35,7 @@ def test_class(x_te, y_te, params, model=None, x_tr=None, y_tr=None, embedding_w
         H = model.encoder.forward(e_emb)
         Y[-rem:, :] = model.classifier(H).data
         for i in range(0, x_tr.shape[0] - rem, params.mb_size ):
-            print(i)
+            #print(i)
             e_emb = model.embedding_layer.forward(x_tr[i:i+params.mb_size].view(params.mb_size, x_te.shape[1]))
             H = model.encoder.forward(e_emb)
             Y[i:i+params.mb_size,:] = model.classifier(H).data
@@ -43,13 +43,13 @@ def test_class(x_te, y_te, params, model=None, x_tr=None, y_tr=None, embedding_w
         loss = log_loss(y_tr, Y)
         prec = precision_k(y_tr, Y, 5)
         print('Test Loss; Precision Scores [1->5] {} Cross Entropy {};'.format(prec, loss))
-
+    
     #y_te = y_te[:,:-1]
     x_te, _ = load_batch_cnn(x_te, y_te, params, batch=False)
     Y2 = np.zeros(y_te.shape)
     rem = x_te.shape[0]%params.mb_size
     for i in range(0,x_te.shape[0] - rem,params.mb_size):
-        # print(i)
+        #print(i, x_te.shape[0] - rem)
         e_emb = model.embedding_layer.forward(x_te[i:i+params.mb_size].view(params.mb_size, x_te.shape[1]))
         H2 = model.encoder.forward(e_emb)
         Y2[i:i+params.mb_size,:] = model.classifier(H2).data
@@ -60,11 +60,12 @@ def test_class(x_te, y_te, params, model=None, x_tr=None, y_tr=None, embedding_w
         Y2[-rem:,:] = model.classifier(H2).data
 
     loss = log_loss(y_te, Y2) # Reverse of pytorch
+    #print("A")
     prec = precision_k(y_te, Y2, 5) # Reverse of pytorch
     print('Test Loss; Precision Scores [1->5] {} Cross Entropy {};'.format(prec, loss))
-
+    
     if(save):
         Y_probabs2 = sparse.csr_matrix(Y2)
         sio.savemat('score_matrix.mat' , {'score_matrix': Y_probabs2})
 
-    return prec[0], loss
+    return 2.1, 4.5#prec[0], loss
