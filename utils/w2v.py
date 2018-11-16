@@ -16,7 +16,7 @@ def train_word2vec(sentence_matrix, vocabulary_inv,
     min_word_count  # Minimum word count
     context         # Context window size
     """
-    model_dir = 'word2vec_models'
+    model_dir = '../embedding_weights'
     model_name = "{:d}features_{:d}minwords_{:d}context".format(num_features, min_word_count, context)
     model_name = join(model_dir, model_name)
     if exists(model_name):
@@ -62,7 +62,7 @@ def load_word2vec(params):
     num_features    # Word vector dimensionality
     """
 
-    model_dir = 'word2vec_models'
+    model_dir = '../embedding_weights'
 
     if params.model_type == 'GoogleNews':
         model_name = join(model_dir, 'GoogleNews-vectors-negative300.bin.gz')
@@ -73,7 +73,8 @@ def load_word2vec(params):
 
     elif params.model_type == 'glove':
         model_name = join(model_dir, 'glove.6B.%dd.txt' % (params.num_features))
-        assert(exists(model_name))
+        print(model_name)
+	assert(exists(model_name))
         print('Loading existing Word2Vec model (Glove.6B.%dd)' % (params.num_features))
 
         # dictionary, where key is word, value is word vectors

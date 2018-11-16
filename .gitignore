@@ -3,3 +3,4 @@ datasets
 *.npy
 *.npz
 *.pyc
+embedding_weights/*

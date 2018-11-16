@@ -44,7 +44,7 @@ def test_class(x_te, y_te, params, model=None, x_tr=None, y_tr=None, embedding_w
         prec = precision_k(y_tr, Y, 5)
         print('Test Loss; Precision Scores [1->5] {} Cross Entropy {};'.format(prec, loss))
 
-    y_te = y_te[:,:-1]
+    #y_te = y_te[:,:-1]
     x_te, _ = load_batch_cnn(x_te, y_te, params, batch=False)
     Y2 = np.zeros(y_te.shape)
     rem = x_te.shape[0]%params.mb_size

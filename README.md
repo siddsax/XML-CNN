@@ -4,7 +4,7 @@ Pytorch implementation of the paper http://nyc.lti.cs.cmu.edu/yiming/Publication
 ## Dependencies
 
 * NLTK (stopwords)
-* Pytorch
+* Pytorch >= 0.3.1
 * Gensim
 * Matplotlib
 
