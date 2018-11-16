@@ -89,6 +89,8 @@ def train(x_tr, y_tr, x_te, y_te, embedding_weights, params):
 
 		print('End-of-Epoch: Loss: {:.4}; best_loss: {:.4};'.format(totalLoss, bestTotalLoss))
 	
+		# import pdb
+		# pdb.set_trace()
 		test_prec_acc, test_ce_loss = test_class(x_te, y_te, params, model=model, verbose=False, save=False)
 		model.train()
 		

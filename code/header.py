@@ -15,9 +15,7 @@ import data_helpers
 
 from w2v import *
 from embedding_layer import embedding_layer
-from cnn_decoder import cnn_decoder
 from cnn_encoder import cnn_encoder
-from classifier import classifier
 from sklearn import preprocessing
 from sklearn.decomposition import PCA
 import scipy.io as sio

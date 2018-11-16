@@ -2,6 +2,14 @@ from header import *
 from collections import OrderedDict
 from sklearn.metrics import log_loss
 
+# def pass(a, b, model, x_tr, Y, params):
+#     # e_emb = model.embedding_layer.forward(x_tr[i:i+params.mb_size].view(params.mb_size, x_te.shape[1]))
+#     # Y[i:i+params.mb_size,:] = model.classifier(e_emb).data
+#     e_emb = model.embedding_layer.forward(x_tr[a:b].view(params.mb_size, x_tr.shape[1]))
+#     Y[a:b,:] = model.classifier(e_emb).data
+
+#     return Y
+
 def test_class(x_te, y_te, params, model=None, x_tr=None, y_tr=None, embedding_weights=None, verbose=True, save=True ):
 
     
@@ -32,13 +40,11 @@ def test_class(x_te, y_te, params, model=None, x_tr=None, y_tr=None, embedding_w
         Y = np.zeros(y_tr.shape)
         rem = x_tr.shape[0]%params.mb_size
         e_emb = model.embedding_layer.forward(x_tr[-rem:].view(rem, x_te.shape[1]))
-        H = model.encoder.forward(e_emb)
-        Y[-rem:, :] = model.classifier(H).data
+        Y[-rem:, :] = model.classifier(e_emb).data
         for i in range(0, x_tr.shape[0] - rem, params.mb_size ):
            
             e_emb = model.embedding_layer.forward(x_tr[i:i+params.mb_size].view(params.mb_size, x_te.shape[1]))
-            H = model.encoder.forward(e_emb)
-            Y[i:i+params.mb_size,:] = model.classifier(H).data
+            Y[i:i+params.mb_size,:] = model.classifier(e_emb).data
     
         loss = log_loss(y_tr, Y)
         prec = precision_k(y_tr.todense(), Y, 5)
@@ -49,15 +55,12 @@ def test_class(x_te, y_te, params, model=None, x_tr=None, y_tr=None, embedding_w
     Y2 = np.zeros(y_te.shape)
     rem = x_te.shape[0]%params.mb_size
     for i in range(0,x_te.shape[0] - rem,params.mb_size):
-        #print(i, x_te.shape[0] - rem)
         e_emb = model.embedding_layer.forward(x_te[i:i+params.mb_size].view(params.mb_size, x_te.shape[1]))
-        H2 = model.encoder.forward(e_emb)
-        Y2[i:i+params.mb_size,:] = model.classifier(H2).data
+        Y2[i:i+params.mb_size,:] = model.classifier(e_emb).data
 
     if(rem):
         e_emb = model.embedding_layer.forward(x_te[-rem:].view(rem, x_te.shape[1]))
-        H2 = model.encoder.forward(e_emb)
-        Y2[-rem:,:] = model.classifier(H2).data
+        Y2[-rem:,:] = model.classifier(e_emb).data
 
     loss = log_loss(y_te, Y2) # Reverse of pytorch
     #print("A")

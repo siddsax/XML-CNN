@@ -139,7 +139,9 @@ def save_load_data(params, save=0):
     params.vocab_size = len(vocabulary)
     params.classes = y_tr.shape[1]
 
-    return x_tr, x_te, y_tr, y_te, vocabulary, vocabulary_inv, params
+    # import pdb
+    # pdb.set_trace()
+    return x_tr, x_te, y_tr, y_te[:, :-1], vocabulary, vocabulary_inv, params
 
 def load_batch_cnn(x_tr, y_tr, params, batch=True, batch_size=0, decoder_word_input=None, decoder_target=None, testing=0):
 
@@ -171,7 +173,7 @@ def load_batch_cnn(x_tr, y_tr, params, batch=True, batch_size=0, decoder_word_in
 def update_params(params):
     if(len(params.model_name)==0):
         params.model_name = gen_model_file(params)
-    params.decoder_kernels = [(400, params.Z_dim + params.H_dim + params.embedding_dim, 3),
+    params.decoder_kernels = [(400, params.Z_dim + params.hidden_dims + params.embedding_dim, 3),
                                 (450, 400, 3),
                                 (500, 450, 3)]
     params.decoder_dilations = [1, 2, 4]
