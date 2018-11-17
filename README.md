@@ -9,7 +9,8 @@ Pytorch implementation of the paper http://nyc.lti.cs.cmu.edu/yiming/Publication
 * Matplotlib
 
 Directory Structure:
-XML-CNN
+
+```
 +-- code
 |   +-- cnn_test.py  
 |   +-- cnn_train.py
@@ -38,14 +39,20 @@ XML-CNN
 |   +-- process_eurlex.py
 |   +-- w2v.py
 +-- README.md
-
+```
 Glove embeddings are needed by default as pre-training for the model. They can be download from [here](https://nlp.stanford.edu/data/glove.6B.zip) and placed in ```embedding_weights``` directory. The Default embedding dimension is 300 with 6 Billion (6B) tokens. Otherwise you can set --model_variation = 0 for starting from scratch.
 
 Sample dataset RCV can be downloaded from [here](http://cse.iitk.ac.in/users/siddsax/rcv.p). Trained model on RCV1 can be downloaded from below.
 
-[Trained model]
-Scores
+[Trained model](http://cse.iitk.ac.in/users/siddsax/rcvSaved.pt)
 
+Precision Scores
+
+| 1 | 2 | 3 | 4 | 5 | 
+|---|---|---|---|---|
+|0.96 | 0.8848 | 0.7809 | 0.6436 | 0.5457 |
+
+Note: The scores are slighltly higher as the tested dataset is part of the full test dataset.
 
 Procedure to train and test the model:
 ```bash
