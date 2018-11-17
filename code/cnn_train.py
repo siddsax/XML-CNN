@@ -9,6 +9,7 @@ def train(x_tr, y_tr, x_te, y_te, embedding_weights, params):
 	loss_best = float('Inf')
 	bestTotalLoss = float('Inf')
 	best_test_acc = 0
+	max_grad = 0
 
 	num_mb = np.ceil(params.N/params.mb_size)
 	
@@ -52,7 +53,7 @@ def train(x_tr, y_tr, x_te, y_te, embedding_weights, params):
 			totalLoss += loss.data
 			
 			if i % int(num_mb/12) == 0:
-				print('Iter-{}; Loss: {:.4}; best_loss: {:.4}'.format(i, loss.data, loss_best))
+				print('Iter-{}; Loss: {:.4}; best_loss: {:.4}; max_grad: {}:'.format(i, loss.data, loss_best, max_grad))
 				if not os.path.exists('saved_models/' + params.model_name ):
 					os.makedirs('saved_models/' + params.model_name)
 				save_model(model, optimizer, epoch, params.model_name + "/model_best_batch")
@@ -63,7 +64,22 @@ def train(x_tr, y_tr, x_te, y_te, embedding_weights, params):
 			loss.backward()
 			loss = loss.data
 			torch.nn.utils.clip_grad_norm(model.parameters(), params.clip)
-			optimizer.step()
+			max_grad = 0
+			for p in model.parameters():
+				if(p.grad is not None):
+					max_grad = max(torch.max(p.grad).data[0], max_grad)
+					sm += p.grad.view(-1).shape[0]
+					sm2 = p.grad.mean().squeeze()*p.grad.view(-1).shape[0]
+			avg_grad = (sm2/sm).data[0]
+			# optimizer.step()
+			if(torch.__version__ == '0.4.0'):
+					torch.nn.utils.clip_grad_norm_(model.parameters(), params.clip)
+			else:
+					torch.nn.utils.clip_grad_norm(model.parameters(), params.clip)
+			for p in model.parameters():
+					if(p.grad is not None):
+							p.data.add_(-params.lr, p.grad.data)
+
 			optimizer.zero_grad()
 
 			# ----------------------------------------------------------------------------
