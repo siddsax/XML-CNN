@@ -67,7 +67,7 @@ def load_data_and_labels(data, M=0, N=0):
        		#y_te = y_te.resize((np.shape(y_te)[0], np.shape(y_tr)[1]))
 	    	Y = sp.csr_matrix((val_idx, (row_idx, col_idx)), shape=(m, N))
     	elif(N < n):
-		Y = sp.csr_matrix((val_idx, (row_idx, col_idx)), shape=(m, N))
+		Y = sp.csr_matrix((val_idx, (row_idx, col_idx)), shape=(m, n))
         	Y = Y[:, :N]
     else:
 	Y = sp.csr_matrix((val_idx, (row_idx, col_idx)), shape=(m, n))
