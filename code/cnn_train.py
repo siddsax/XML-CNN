@@ -54,8 +54,8 @@ def train(x_tr, y_tr, x_te, y_te, embedding_weights, params):
 			
 			if i % int(num_mb/12) == 0:
 				print('Iter-{}; Loss: {:.4}; best_loss: {:.4}; max_grad: {}:'.format(i, loss.data, loss_best, max_grad))
-				if not os.path.exists('saved_models/' + params.model_name ):
-					os.makedirs('saved_models/' + params.model_name)
+				if not os.path.exists('../saved_models/' + params.model_name ):
+					os.makedirs('../saved_models/' + params.model_name)
 				save_model(model, optimizer, epoch, params.model_name + "/model_best_batch")
 				if(loss<loss_best):
 					loss_best = loss.data
@@ -101,8 +101,8 @@ def train(x_tr, y_tr, x_te, y_te, embedding_weights, params):
 		if(totalLoss<bestTotalLoss):
 
 			bestTotalLoss = totalLoss
-			if not os.path.exists('saved_models/' + params.model_name ):
-				os.makedirs('saved_models/' + params.model_name)
+			if not os.path.exists('../saved_models/' + params.model_name ):
+				os.makedirs('../saved_models/' + params.model_name)
 			save_model(model, optimizer, epoch, params.model_name + "/model_best_epoch")
 
 		print('End-of-Epoch: {} Loss: {:.4}; best_loss: {:.4};'.format(epoch, totalLoss, bestTotalLoss))
@@ -116,8 +116,8 @@ def train(x_tr, y_tr, x_te, y_te, embedding_weights, params):
 			best_test_loss = test_ce_loss
 			best_test_acc = test_prec_acc
 			print("This acc is better than the previous recored test acc:- {} ; while CELoss:- {}".format(best_test_acc, best_test_loss))
-			if not os.path.exists('saved_models/' + params.model_name ):
-				os.makedirs('saved_models/' + params.model_name)
+			if not os.path.exists('../saved_models/' + params.model_name ):
+				os.makedirs('../saved_models/' + params.model_name)
 			save_model(model, optimizer, epoch, params.model_name + "/model_best_test")
 
 		if epoch % params.save_step == 0:

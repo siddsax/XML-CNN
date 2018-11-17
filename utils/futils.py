@@ -72,7 +72,7 @@ def save_model(model, optimizer, epoch, name):
         'optimizer': optimizer.state_dict(),
         'epoch': epoch
     }
-    torch.save(checkpoint, "saved_models/" + name)
+    torch.save(checkpoint, "../saved_models/" + name)
 def sample_z(mu, log_var, params, dtype_f):
     eps = Variable(torch.randn(params.batch_size, params.Z_dim).type(dtype_f))
     k = torch.exp(log_var / 2) * eps

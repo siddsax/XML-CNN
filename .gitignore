@@ -1,4 +1,4 @@
-code/saved_models
+*saved_models
 datasets
 *.npy
 *.npz
