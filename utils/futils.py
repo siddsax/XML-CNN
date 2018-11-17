@@ -21,7 +21,7 @@ def weights_init(m):
     if(torch.__version__=='0.4.0'):
     	torch.nn.init.xavier_uniform_(m)
     else:
-	    torch.nn.init.xavier_uniform(m)
+	torch.nn.init.xavier_uniform(m)
 def get_gpu_memory_map(boom, name=False):
     result = subprocess.check_output(
         [
@@ -49,6 +49,30 @@ def count_parameters(model):
 def effective_k(k, d):
     return (k - 1) * d + 1
 
+def load_model(model, name, optimizer=None):
+    if(torch.cuda.is_available()):
+        checkpoint = torch.load(name)
+    else:
+        checkpoint = torch.load(name, map_location=lambda storage, loc: storage)
+
+    model.load_state_dict(checkpoint['state_dict'])
+
+    if optimizer is not None:
+        optimizer.load_state_dict(checkpoint['optimizer'])
+        init = checkpoint['epoch']
+        return model, optimizer, init
+    else:
+        return model
+
+def save_model(model, optimizer, epoch, name):
+    if not os.path.exists('saved_models/' + params.model_name ):
+        os.makedirs('saved_models/' + params.model_name)
+    checkpoint = {
+        'state_dict': model.state_dict(),
+        'optimizer': optimizer.state_dict(),
+        'epoch': epoch
+    }
+    torch.save(checkpoint, "saved_models/" + name)
 def sample_z(mu, log_var, params, dtype_f):
     eps = Variable(torch.randn(params.batch_size, params.Z_dim).type(dtype_f))
     k = torch.exp(log_var / 2) * eps
@@ -139,9 +163,7 @@ def save_load_data(params, save=0):
     params.vocab_size = len(vocabulary)
     params.classes = y_tr.shape[1]
 
-    # import pdb
-    # pdb.set_trace()
-    return x_tr, x_te, y_tr, y_te[:, :-1], vocabulary, vocabulary_inv, params
+    return x_tr, x_te, y_tr, y_te, vocabulary, vocabulary_inv, params
 
 def load_batch_cnn(x_tr, y_tr, params, batch=True, batch_size=0, decoder_word_input=None, decoder_target=None, testing=0):
 
@@ -188,30 +210,3 @@ def sample_word_from_distribution(params, distribution):
     x = np.zeros((params.vocab_size, 1))
     x[ix] = 1
     return params.vocabulary_inv[np.argmax(x)]
-
-def load_model(model, name, optimizer=None):
-    if(torch.cuda.is_available()):
-        checkpoint = torch.load(name)
-    else:
-        checkpoint = torch.load(
-            name, map_location=lambda storage, loc: storage)
-
-    model.load_state_dict(checkpoint['state_dict'])
-
-    if optimizer is not None:
-        optimizer.load_state_dict(checkpoint['optimizer'])
-        init = checkpoint['epoch']
-        return model, optimizer, init
-    else:
-        return model
-
-
-def save_model(model, optimizer, epoch, name):
-    if not os.path.exists('saved_models/'):
-        os.makedirs('saved_models/')
-    checkpoint = {
-        'state_dict': model.state_dict(),
-        'optimizer': optimizer.state_dict(),
-        'epoch': epoch
-    }
-    torch.save(checkpoint, "saved_models/" + name)

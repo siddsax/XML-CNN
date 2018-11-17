@@ -37,6 +37,7 @@ class cnn_encoder(torch.nn.Module):
         self.fin_layer = nn.Linear(fin_l_out_size, params.hidden_dims)
         self.out_layer = nn.Linear(params.hidden_dims, params.y_dim)
         torch.nn.init.xavier_uniform_(self.fin_layer.weight)
+	torch.nn.init.xavier_uniform_(self.out_layer.weight)
 
     def forward(self, inputs):
         #o0 = self.drp(self.bn_1(inputs)).permute(0,2,1)
