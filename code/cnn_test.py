@@ -18,7 +18,7 @@ def test_class(x_te, y_te, params, model=None, x_tr=None, y_tr=None, embedding_w
             print("Error: Embedding weights needed!")
             exit()
         else:
-            model = cnn_encoder_decoder(params, embedding_weights)
+            model = xmlCNN(params, embedding_weights)
             # state_dict = torch.load(params.load_model + "/model_best", map_location=lambda storage, loc: storage)
             # new_state_dict = OrderedDict()
             # for k, v in state_dict.items():
@@ -26,7 +26,8 @@ def test_class(x_te, y_te, params, model=None, x_tr=None, y_tr=None, embedding_w
             #     new_state_dict[name] = v
             # model.load_state_dict(new_state_dict)
             # del new_state_dict
-            model.load_state_dict(torch.load(params.load_model, map_location=lambda storage, loc: storage))
+            model = load_model(model, params.load_model)
+	   
     if(torch.cuda.is_available()):
         params.dtype_f = torch.cuda.FloatTensor
         params.dtype_i = torch.cuda.LongTensor
@@ -36,16 +37,15 @@ def test_class(x_te, y_te, params, model=None, x_tr=None, y_tr=None, embedding_w
         params.dtype_i = torch.LongTensor
 
     if(x_tr is not None and y_tr is not None):
-        x_tr, _, _, _ = load_batch_cnn(x_tr, y_tr, params, batch=False)
+        x_tr, _ = load_batch_cnn(x_tr, y_tr, params, batch=False)
         Y = np.zeros(y_tr.shape)
-        rem = x_tr.shape[0]%params.mb_size
-        e_emb = model.embedding_layer.forward(x_tr[-rem:].view(rem, x_te.shape[1]))
-        Y[-rem:, :] = model.classifier(e_emb).data
+        rem = x_tr.shape[0]%params.mb_size 
         for i in range(0, x_tr.shape[0] - rem, params.mb_size ):
-           
             e_emb = model.embedding_layer.forward(x_tr[i:i+params.mb_size].view(params.mb_size, x_te.shape[1]))
             Y[i:i+params.mb_size,:] = model.classifier(e_emb).data
-    
+ 	if(rem):
+           e_emb = model.embedding_layer.forward(x_tr[-rem:].view(rem, x_te.shape[1]))
+           Y[-rem:, :] = model.classifier(e_emb).data   
         loss = log_loss(y_tr, Y)
         prec = precision_k(y_tr.todense(), Y, 5)
         print('Test Loss; Precision Scores [1->5] {} {} {} {} {} Cross Entropy {};'.format(prec[0], prec[1], prec[2], prec[3], prec[4],loss))
@@ -69,6 +69,6 @@ def test_class(x_te, y_te, params, model=None, x_tr=None, y_tr=None, embedding_w
     
     if(save):
         Y_probabs2 = sparse.csr_matrix(Y2)
-        sio.savemat('score_matrix.mat' , {'score_matrix': Y_probabs2})
+        sio.savemat('/'.join(params.load_model.split('/')[-1]) + '/score_matrix.mat' , {'score_matrix': Y_probabs2})
 
-    return 2.1, 4.5#prec[0], loss
+    return prec[0], loss

@@ -105,7 +105,7 @@ def train(x_tr, y_tr, x_te, y_te, embedding_weights, params):
 				os.makedirs('saved_models/' + params.model_name)
 			save_model(model, optimizer, epoch, params.model_name + "/model_best_epoch")
 
-		print('End-of-Epoch: Loss: {:.4}; best_loss: {:.4};'.format(totalLoss, bestTotalLoss))
+		print('End-of-Epoch: {} Loss: {:.4}; best_loss: {:.4};'.format(epoch, totalLoss, bestTotalLoss))
 	
 		# import pdb
 		# pdb.set_trace()
