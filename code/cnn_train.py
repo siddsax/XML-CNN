@@ -64,6 +64,8 @@ def train(x_tr, y_tr, x_te, y_te, embedding_weights, params):
 			loss.backward()
 			loss = loss.data
 			torch.nn.utils.clip_grad_norm(model.parameters(), params.clip)
+			sm = 0
+			sm2=0
 			max_grad = 0
 			for p in model.parameters():
 				if(p.grad is not None):
