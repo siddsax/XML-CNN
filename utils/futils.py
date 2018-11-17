@@ -65,8 +65,8 @@ def load_model(model, name, optimizer=None):
         return model
 
 def save_model(model, optimizer, epoch, name):
-    if not os.path.exists('saved_models/' + name):
-        os.makedirs('saved_models/' + name)
+  
+   
     checkpoint = {
         'state_dict': model.state_dict(),
         'optimizer': optimizer.state_dict(),
