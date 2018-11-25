@@ -8,6 +8,8 @@
 * Gensim
 * Matplotlib
 
+![](cnn.jpg)
+
 Directory Structure:
 
 ```
