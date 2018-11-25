@@ -56,7 +56,11 @@ Precision Scores
 
 Note: The scores are slighltly higher as the tested dataset is part of the full test dataset.
 
+<<<<<<< HEAD
 Procedure to train and test the model:
+=======
+Procedure to train and test the model is as follows. The code by default doesn't plot graphs. Though that can be enabled wth a visdom server running [[Visdom](https://github.com/facebookresearch/visdom)] and turing on flag --d
+>>>>>>> 667d7f0da23346b2e056ef427ac8b48250555774
 ```bash
 python main.py # train a model
 python main.py --mn=rcv # train a model and save in directory rcv [inside saved_models]
