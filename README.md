@@ -1,3 +1,5 @@
+This repo is from my past life. I am now co-founder and CTO @ (Merlin)[getmerlin.in]
+
 # XML-CNN
   Pytorch implementation of the paper [Deep Learning for Extreme Multi-label Text Classification](http://nyc.lti.cs.cmu.edu/yiming/Publications/jliu-sigir17.pdf) with dynamic pooling
 
