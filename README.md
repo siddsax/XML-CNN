@@ -1,4 +1,4 @@
-This repo is from my past life. I am now co-founder and CTO @ [Merlin](getmerlin.in)
+This repo is from my past life. I am now co-founder and CTO @ [Merlin](getmerlin.in). Check out our [blog](getmerlin.in/blog) and [chrome extension](https://chromewebstore.google.com/detail/merlin-1-click-access-to/camppjleccjaphfdbohjdohecfnoikec)
 
 # XML-CNN
   Pytorch implementation of the paper [Deep Learning for Extreme Multi-label Text Classification](http://nyc.lti.cs.cmu.edu/yiming/Publications/jliu-sigir17.pdf) with dynamic pooling
