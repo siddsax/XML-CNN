@@ -77,3 +77,4 @@ python main.py --lm=$DESTINATION OF SAVED MODEL --tr=0
 
 This will first print the training error and then the test error while also saving a score_matrix.mat in the folder the model is loaded that can be used to run test scripts from [here](https://drive.google.com/open?id=0B3lPMIHmG6vGN0hSQjFJUHZ0YTg)
   
+
